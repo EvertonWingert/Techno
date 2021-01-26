@@ -1,18 +1,5 @@
-const Alerta = {
-    name: "Alerta",
-    template: `<div class="alerta" :class="{ativo: alertaAtivo}">
-    <p class="alerta_mensagem">{{mensagemAlerta}}</p>
-  </div>`,
-    methods: {
-        alerta(mensagem){
-            this.mensagemAlerta = mensagem;
-            this.alertaAtivo = true;
-            setTimeout(() => {
-                this.alertaAtivo = false;
-            }, 1500);
-        },
-    }
-}
+
+
 const vm = new Vue({
     el: "#app",
     data: {
@@ -82,11 +69,12 @@ const vm = new Vue({
             this.produto.estoque--;
             const {id, nome, preco} = this.produto;
             this.carrinho.push({id, nome, preco});
+            this.alertaAtivo = true;
             this.alerta(`${nome} adicionado ao carrinho`);
             
         },
         removerItem(index){
-            this.produto.estoque--;
+            this.produtos.estoque--;
             this.carrinho.splice(index, 1);
         },
         checarLocalStorage(){
@@ -94,7 +82,14 @@ const vm = new Vue({
                 this.carrinho = JSON.parse(window.localStorage.carrinho);
             }
         },
-        
+        alerta(mensagem){
+            this.mensagemAlerta = mensagem;
+            this.alertaAtivo = true;
+            setTimeout(() => {
+                this.alertaAtivo = false;
+            }, 1500);
+        },
+
         compararEstoque(){
             const items =this.carrinho.filter(({id}) =>id === this.produto.id)
             this.produto.estoque -= items.length;
